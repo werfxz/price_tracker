@@ -2,7 +2,7 @@ import requests
 import random
 from bs4 import BeautifulSoup 
 
-#random header ve proxy oluşturma
+#creating random headers ve proxies
 #https://github.com/taspinar/twitterscraper/blob/0e5e269ee17e868a002b1266a0f1cd2c0de53360/twitterscraper/query.py#L45
 HEADERS_LIST = [
     'Mozilla/5.0 (Windows; U; Windows NT 6.1; x64; fr; rv:1.9.2.13) Gecko/20101203 Firebird/3.6.13',
