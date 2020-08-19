@@ -82,13 +82,16 @@ def scrape_amazon(url, timeout=60):
     soup = get_request(url, timeout)
 
     #if product has discount
-    try:
+    if len(soup.find_all("span", attrs={"id": "priceblock_dealprice"})) == 1:
         content = soup.find_all("span", attrs={"id": "priceblock_dealprice"})
-        return content[0].get_text()
     #if product has no discount
-    except IndexError:
+    elif len(soup.find_all("span", attrs={"id": "priceblock_ourprice"})) == 1:
         content = soup.find_all("span", attrs={"id": "priceblock_ourprice"})
-        return content[0].get_text()
+    else:
+        print("Can't find price of the Trendyol Product")
+        return 0
+
+    return content[0].get_text()
     
 def scrape_vatan(url, timeout=60):
     """
@@ -96,6 +99,6 @@ def scrape_vatan(url, timeout=60):
     """
     soup = get_request(url, timeout)
 
-    content = soup.find_all("span", attrs={"class": "product-list__price"})
+    content = soup.find_all("div", attrs= {"class": "product-list__content"})[0].find_all("span", attrs={"class": "product-list__price"})
     
     return content[0].get_text()
