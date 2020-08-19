@@ -62,10 +62,15 @@ def scrape_trendyol(url, timeout=60):
     """
     soup = get_request(url, timeout)
 
-    try:
+    #if there is no basket discount
+    if len(soup.find_all("div", attrs={"class": "pr-cn"})[0].select('span[class="prc-slg"]')) == 1:
         content = soup.find_all("span", attrs={"class": "prc-slg"})
-    except IndexError:
+    #if there is a basket discount
+    elif len(soup.find_all("div", attrs={"class": "pr-cn"})[0].find_all("span", attrs={"class": "prc-dsc"})) == 1:
         content = soup.find_all("span", attrs={"class": "prc-dsc"})
+    else:
+        print("Can't find price of the Trendyol Product")
+        return 0
 
     #TODO Virgül ile split yapınce küsüratsız fiyatlarda ikiye ayıramıyorsun
     return content[0].get_text().split(',')[0].replace('.','')
