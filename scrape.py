@@ -64,10 +64,10 @@ def scrape_trendyol(url, timeout=60):
 
     #if there is no basket discount
     if len(soup.find_all("div", attrs={"class": "pr-cn"})[0].select('span[class="prc-slg"]')) == 1:
-        content = soup.find_all("span", attrs={"class": "prc-slg"})
+        content = soup.find_all("div", attrs={"class": "pr-cn"})[0].select('span[class="prc-slg"]')
     #if there is a basket discount
     elif len(soup.find_all("div", attrs={"class": "pr-cn"})[0].find_all("span", attrs={"class": "prc-dsc"})) == 1:
-        content = soup.find_all("span", attrs={"class": "prc-dsc"})
+        content = soup.find_all("div", attrs={"class": "pr-cn"})[0].find_all("span", attrs={"class": "prc-dsc"})
     else:
         print("Can't find price of the Trendyol Product")
         return 0
