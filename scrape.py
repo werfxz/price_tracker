@@ -102,3 +102,48 @@ def scrape_vatan(url, timeout=60):
     content = soup.find_all("div", attrs= {"class": "product-list__content"})[0].find_all("span", attrs={"class": "product-list__price"})
     
     return content[0].get_text()
+
+def scrape_teknosa(url, timeout=60):
+    """
+    This function takes teknosa product url and returns price of product
+    """
+    soup = get_request(url, timeout)
+    
+    #if product has no discount
+    if len(soup.find_all("div", attrs={"class": "product-detail-text"})[0].find_all("div", attrs={"class": "default-price"})) == 1:
+        content = soup.find_all("div", attrs={"class": "product-detail-text"})[0].find_all("div", attrs={"class": "default-price"})
+    #if product has discount
+    elif len(soup.find_all("div", attrs={"class": "product-detail-text"})[0].find_all("div", attrs={"class": "new-price"})) == 1:
+        content = soup.find_all("div", attrs={"class": "product-detail-text"})[0].find_all("div", attrs={"class": "new-price"})
+    else:
+        print("Can't find price of the Teknosa Product")
+        return 0
+
+    return content[0].get_text()
+
+def scrape_incehesap(url, timeout=60):
+    """
+    This function takes incehesap product url and returns price of product
+    """
+    soup = get_request(url, timeout)
+    
+    if len(soup.select('div[class="container first"]')[0].find_all("span", attrs={"class": "cur"})) == 1:
+        content = soup.select('div[class="container first"]')[0].find_all("span", attrs={"class": "cur"})
+    elif len(soup.select('div[class="container first"]')[0].find_all("div", attrs={"class": "arti-indirimli-fiyat cur"})) == 1:
+        content = soup.select('div[class="container first"]')[0].find_all("div", attrs={"class": "arti-indirimli-fiyat cur"})
+    else:
+        print("Can't find price of the İnce hesap Product")
+        return 0
+
+    return content[0].get_text()
+
+def scrape_itopya(url, timeout=60):
+    """
+    This function takes itopya product url and returns price of product
+    """
+    soup = get_request(url, timeout)
+
+    content = soup.find_all("div", attrs= {"class": "product-info"})[0].select('div[class="new text-right"]')
+
+    return content[0].get_text()
+    
