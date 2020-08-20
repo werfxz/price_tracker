@@ -1,3 +1,4 @@
+import re
 import requests
 import random
 from bs4 import BeautifulSoup 
@@ -35,6 +36,14 @@ def get_random_proxy(proxies):
     return random.choice(proxies)
 
 
+def extract_price(price_string):
+    """
+    This function takes messy price string and convert it to integer
+    It cuts the decimal point there is no rounding
+    """
+    
+    extracted_price = re.sub("[^0-9]", "", price_string.split(',')[0])
+    return int(extracted_price)
 
 def get_request(url, timeout):
     """
@@ -61,7 +70,8 @@ def scrape_trendyol(url, timeout=60):
     This function takes trendyol product url and returns price of product
     """
     soup = get_request(url, timeout)
-
+    
+    #TODO Solve index out of range error
     #if there is no basket discount
     if len(soup.find_all("div", attrs={"class": "pr-cn"})[0].select('span[class="prc-slg"]')) == 1:
         content = soup.find_all("div", attrs={"class": "pr-cn"})[0].select('span[class="prc-slg"]')
@@ -72,8 +82,8 @@ def scrape_trendyol(url, timeout=60):
         print("Can't find price of the Trendyol Product")
         return 0
 
-    #TODO Virgül ile split yapınce küsüratsız fiyatlarda ikiye ayıramıyorsun
-    return content[0].get_text().split(',')[0].replace('.','')
+    #first remove decimal point from price then remove non numeric chars
+    return extract_price(content[0].get_text())
 
 def scrape_amazon(url, timeout=60):
     """
@@ -87,11 +97,14 @@ def scrape_amazon(url, timeout=60):
     #if product has no discount
     elif len(soup.find_all("span", attrs={"id": "priceblock_ourprice"})) == 1:
         content = soup.find_all("span", attrs={"id": "priceblock_ourprice"})
+    elif len(soup.find_all("span", attrs={"id": "priceblock_saleprice"})) == 1:
+        content = soup.find_all("span", attrs={"id": "priceblock_saleprice"})
     else:
-        print("Can't find price of the Trendyol Product")
+        print("Can't find price of the Amazon Product")
         return 0
 
-    return content[0].get_text()
+    #first remove decimal point from price then remove non numeric chars
+    return extract_price(content[0].get_text())
     
 def scrape_vatan(url, timeout=60):
     """
@@ -101,7 +114,8 @@ def scrape_vatan(url, timeout=60):
 
     content = soup.find_all("div", attrs= {"class": "product-list__content"})[0].find_all("span", attrs={"class": "product-list__price"})
     
-    return content[0].get_text()
+    #first remove decimal point from price then remove non numeric chars
+    return extract_price(content[0].get_text())
 
 def scrape_teknosa(url, timeout=60):
     """
@@ -119,7 +133,7 @@ def scrape_teknosa(url, timeout=60):
         print("Can't find price of the Teknosa Product")
         return 0
 
-    return content[0].get_text()
+    return extract_price(content[0].get_text())
 
 def scrape_incehesap(url, timeout=60):
     """
@@ -135,15 +149,15 @@ def scrape_incehesap(url, timeout=60):
         print("Can't find price of the İnce hesap Product")
         return 0
 
-    return content[0].get_text()
+    return extract_price(content[0].get_text())
 
 def scrape_itopya(url, timeout=60):
     """
     This function takes itopya product url and returns price of product
     """
     soup = get_request(url, timeout)
-
+    #TODO Solve index out of range error
     content = soup.find_all("div", attrs= {"class": "product-info"})[0].select('div[class="new text-right"]')
 
-    return content[0].get_text()
+    return extract_price(content[0].get_text())
     
