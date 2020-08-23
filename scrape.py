@@ -72,11 +72,19 @@ def scrape_trendyol(url, timeout=60):
     soup = get_request(url, timeout)
     
     #if there is no basket discount
-    if len(soup.find_all("div", attrs={"class": "pr-cn"})[0].select('span[class="prc-slg"]')) == 1:
-        content = soup.find_all("div", attrs={"class": "pr-cn"})[0].select('span[class="prc-slg"]')
+    if len(soup.find_all(
+                "div", attrs={"class": "pr-cn"})[0].select(
+                'span[class="prc-slg"]')) == 1:
+        content = soup.find_all(
+                       "div",attrs={"class": "pr-cn"})[0].select(
+                       'span[class="prc-slg"]')
     #if there is a basket discount
-    elif len(soup.find_all("div", attrs={"class": "pr-cn"})[0].find_all("span", attrs={"class": "prc-dsc"})) == 1:
-        content = soup.find_all("div", attrs={"class": "pr-cn"})[0].find_all("span", attrs={"class": "prc-dsc"})
+    elif len(soup.find_all(
+                  "div", attrs={"class": "pr-cn"})[0].find_all(
+                  "span", attrs={"class": "prc-dsc"})) == 1:
+        content = soup.find_all(
+                       "div", attrs={"class": "pr-cn"})[0].find_all(
+                       "span", attrs={"class": "prc-dsc"})
     else:
         print("Can't find price of the Trendyol Product")
         return 0
@@ -110,7 +118,9 @@ def scrape_vatan(url, timeout=60):
     """
     soup = get_request(url, timeout)
 
-    content = soup.find_all("div", attrs= {"class": "product-list__content"})[0].find_all("span", attrs={"class": "product-list__price"})
+    content = soup.find_all(
+                   "div", attrs= {"class": "product-list__content"})[0].find_all(
+                   "span", attrs={"class": "product-list__price"})
     
     #first remove decimal point from price then remove non numeric chars
     return extract_price(content[0].get_text())
@@ -122,11 +132,19 @@ def scrape_teknosa(url, timeout=60):
     soup = get_request(url, timeout)
     
     #if product has no discount
-    if len(soup.find_all("div", attrs={"class": "product-detail-text"})[0].find_all("div", attrs={"class": "default-price"})) == 1:
-        content = soup.find_all("div", attrs={"class": "product-detail-text"})[0].find_all("div", attrs={"class": "default-price"})
+    if len(soup.find_all(
+                "div", attrs={"class": "product-detail-text"})[0].find_all(
+                "div", attrs={"class": "default-price"})) == 1:
+        content = soup.find_all(
+                       "div", attrs={"class": "product-detail-text"})[0].find_all(
+                       "div", attrs={"class": "default-price"})
     #if product has discount
-    elif len(soup.find_all("div", attrs={"class": "product-detail-text"})[0].find_all("div", attrs={"class": "new-price"})) == 1:
-        content = soup.find_all("div", attrs={"class": "product-detail-text"})[0].find_all("div", attrs={"class": "new-price"})
+    elif len(soup.find_all(
+                  "div", attrs={"class": "product-detail-text"})[0].find_all(
+                  "div", attrs={"class": "new-price"})) == 1:
+        content = soup.find_all(
+                       "div", attrs={"class": "product-detail-text"})[0].find_all(
+                       "div", attrs={"class": "new-price"})
     else:
         print("Can't find price of the Teknosa Product")
         return 0
@@ -139,10 +157,18 @@ def scrape_incehesap(url, timeout=60):
     """
     soup = get_request(url, timeout)
     
-    if len(soup.select('div[class="container first"]')[0].find_all("span", attrs={"class": "cur"})) == 1:
-        content = soup.select('div[class="container first"]')[0].find_all("span", attrs={"class": "cur"})
-    elif len(soup.select('div[class="container first"]')[0].find_all("div", attrs={"class": "arti-indirimli-fiyat cur"})) == 1:
-        content = soup.select('div[class="container first"]')[0].find_all("div", attrs={"class": "arti-indirimli-fiyat cur"})
+    if len(soup.select(
+                'div[class="container first"]')[0].find_all(
+                "span", attrs={"class": "cur"})) == 1:
+        content = soup.select(
+                        'div[class="container first"]')[0].find_all(
+                        "span", attrs={"class": "cur"})
+    elif len(soup.select(
+                  'div[class="container first"]')[0].find_all(
+                  "div", attrs={"class": "arti-indirimli-fiyat cur"})) == 1:
+        content = soup.select(
+                       'div[class="container first"]')[0].find_all(
+                       "div", attrs={"class": "arti-indirimli-fiyat cur"})
     else:
         print("Can't find price of the İnce hesap Product")
         return 0
@@ -155,9 +181,13 @@ def scrape_itopya(url, timeout=60):
     """
     soup = get_request(url, timeout)
 
-    content = soup.find_all("div", attrs= {"class": "product-info"})[0].select('div[class="new text-right"]')
+    content = soup.find_all(
+                   "div", attrs= {"class": "product-info"})[0].select(
+                   'div[class="new text-right"]')
 
     #Remove decimal price because it is specified with "." same as thousand seperation
     #decimal point is written seperateley like "<sup>.65</sup>"
-    return extract_price(content[0].get_text().replace(content[0].find("sup").get_text(), ""))
+    return extract_price(
+           content[0].get_text().replace(
+                                content[0].find("sup").get_text(), ""))
     
