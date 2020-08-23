@@ -10,7 +10,7 @@ def send_mail(message):
     """
     This function takes string and sends mail to the receiver_address
     """
-    
+
     #if you want to add attachment(image, pdf) youtube video explains it
     #excel attachment example https://stackoverflow.com/a/60972152
     #How to send e-mail https://www.youtube.com/watch?v=JRCJ6RtE3xU
@@ -25,3 +25,17 @@ def send_mail(message):
 
         smtp.send_message(msg)
 
+def create_mail_body(product_name, link):
+    """
+    This function creates body of the mail
+    """
+    #TODO Maile diğer satıcıların fiyatlarını da ekle
+    msg = f"""Hey Furkan,
+    
+There could be a discount opportunity for the product you follow: {product_name}
+Please check out the link: {link}
+
+Good Luck
+           """
+
+    return msg
