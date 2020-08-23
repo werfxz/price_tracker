@@ -13,7 +13,10 @@ HEADERS_LIST = [
     'Mozilla/5.0 (Windows NT 5.2; RW; rv:7.0a1) Gecko/20091211 SeaMonkey/9.23a1pre'
 ]
 
-HEADER = {'User-Agent': random.choice(HEADERS_LIST), 'X-Requested-With': 'XMLHttpRequest'}
+def get_random_header():
+
+    header = {'User-Agent': random.choice(HEADERS_LIST), 'X-Requested-With': 'XMLHttpRequest'}
+    return header
 
 PROXY_URL = 'https://free-proxy-list.net/'
 
@@ -35,6 +38,16 @@ def get_random_proxy(proxies):
 
     return random.choice(proxies)
 
+def get_request(url, timeout):
+    """
+    This function sends get request and return bs4 soup object
+    """
+    response = requests.get(url, headers=get_random_header(), 
+                                 proxies={"http": get_random_proxy(PROXIES)}, timeout=timeout)
+    soup = BeautifulSoup(response.content, 'html5lib') 
+
+    return soup
+
 
 def extract_price(price_string):
     """
@@ -44,15 +57,6 @@ def extract_price(price_string):
     #first remove decimal point from price then remove non numeric chars
     extracted_price = re.sub("[^0-9]", "", price_string.split(',')[0])
     return int(extracted_price)
-
-def get_request(url, timeout):
-    """
-    This function sends get request and return bs4 soup object
-    """
-    response = requests.get(url, headers=HEADER, proxies={"http": get_random_proxy(PROXIES)}, timeout=timeout)
-    soup = BeautifulSoup(response.content, 'html5lib') 
-
-    return soup
 
 def scrape_hepsi(url, timeout=60):
     """
@@ -191,3 +195,40 @@ def scrape_itopya(url, timeout=60):
            content[0].get_text().replace(
                                 content[0].find("sup").get_text(), ""))
     
+
+
+def extract_domainname(url):
+    """
+    This function takes full url of website and returns domain name
+    www.amazon.com.tr --> returns "amazon"
+    """
+    domain = re.findall(r'www\.(.+?)\.com',url)[0]
+
+    return domain
+
+
+def extract_product_links(products):
+    """
+    This function takes product dictionary and scrape the links
+    """
+
+    for product in products:
+        print("Product name:", product)
+        for product_link in products[product]:
+            try:
+                if extract_domainname(product_link) == "hepsiburada":
+                    print(extract_domainname(product_link), scrape_hepsi(product_link))
+                if extract_domainname(product_link) == "trendyol":
+                    print(extract_domainname(product_link), scrape_trendyol(product_link))
+                if extract_domainname(product_link) == "amazon":
+                    print(extract_domainname(product_link), scrape_amazon(product_link))
+                if extract_domainname(product_link) == "vatanbilgisayar":
+                    print(extract_domainname(product_link), scrape_vatan(product_link))
+                if extract_domainname(product_link) == "teknosa":
+                    print(extract_domainname(product_link), scrape_trendyol(product_link))
+                if extract_domainname(product_link) == "incehesap":
+                    print(extract_domainname(product_link), scrape_incehesap(product_link))
+                if extract_domainname(product_link) == "itopya":
+                    print(extract_domainname(product_link), scrape_itopya(product_link))
+            except:
+                print("Cant scrape the price from:", extract_domainname(product_link))
