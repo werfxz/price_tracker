@@ -208,42 +208,59 @@ def extract_domainname(url):
 
 def extract_product_links(products):
     """
-    This function takes product dictionary and scrape the links
-    Store the prices as a nested dict
+    This function takes product dictionary and scrape the links and returns both links and prices
+    Store the links and prices as a nested dict
     """
     products_price_dict = {}
+    products_links_dict = {}
     for product_name in products:
         price_dict = {}
+        links_dict = {}
         print("Product name:", product_name)
         for product_link in products[product_name]:
             try:
                 if extract_domainname(product_link) == "hepsiburada":
-                    print(extract_domainname(product_link), scrape_hepsi(product_link))
-                    price_dict["hepsiburada"] = int(scrape_hepsi(product_link))
+                    price_hepsi = int(scrape_hepsi(product_link))
+                    price_dict["hepsiburada"] = price_hepsi
+                    links_dict["hepsiburada"] = product_link
+                    print(extract_domainname(product_link), price_hepsi)
                 if extract_domainname(product_link) == "trendyol":
-                    print(extract_domainname(product_link), scrape_trendyol(product_link))
-                    price_dict["trendyol"] = int(scrape_trendyol(product_link))
+                    price_trendyol = int(scrape_trendyol(product_link))
+                    price_dict["trendyol"] = price_trendyol
+                    links_dict["trendyol"] = product_link
+                    print(extract_domainname(product_link), price_trendyol)
                 if extract_domainname(product_link) == "amazon":
-                    print(extract_domainname(product_link), scrape_amazon(product_link))
-                    price_dict["amazon"] = int(scrape_amazon(product_link))
+                    price_amazon = int(scrape_amazon(product_link))
+                    price_dict["amazon"] = price_amazon
+                    links_dict["amazon"] = product_link
+                    print(extract_domainname(product_link), price_amazon)
                 if extract_domainname(product_link) == "vatanbilgisayar":
-                    print(extract_domainname(product_link), scrape_vatan(product_link))
-                    price_dict["vatanbilgisayar"] = int(scrape_vatan(product_link))
+                    price_vatan = int(scrape_vatan(product_link))
+                    price_dict["vatanbilgisayar"] = price_vatan
+                    links_dict["vatanbilgisayar"] = product_link
+                    print(extract_domainname(product_link), price_vatan)
                 if extract_domainname(product_link) == "teknosa":
-                    print(extract_domainname(product_link), scrape_teknosa(product_link))
-                    price_dict["teknosa"] = int(scrape_teknosa(product_link))
+                    price_teknosa = int(scrape_teknosa(product_link))
+                    price_dict["teknosa"] = price_teknosa
+                    links_dict["teknosa"] = product_link
+                    print(extract_domainname(product_link), price_teknosa)
                 if extract_domainname(product_link) == "incehesap":
-                    print(extract_domainname(product_link), scrape_incehesap(product_link))
-                    price_dict["incehesap"] = int(scrape_incehesap(product_link))
+                    price_incehesap = int(scrape_incehesap(product_link))
+                    price_dict["incehesap"] = price_incehesap
+                    links_dict["incehesap"] = product_link
+                    print(extract_domainname(product_link), price_incehesap)
                 if extract_domainname(product_link) == "itopya":
-                    print(extract_domainname(product_link), scrape_itopya(product_link))
-                    price_dict["itopya"] = int(scrape_itopya(product_link))
+                    price_itopya = int(scrape_itopya(product_link))
+                    price_dict["itopya"] = price_itopya
+                    links_dict["itopya"] = product_link 
+                    print(extract_domainname(product_link), price_itopya)
             except Exception as e:
                 print("Cant scrape the price from:", extract_domainname(product_link))
                 print(e)
 
         products_price_dict[product_name] = price_dict
+        products_links_dict[product_name] = links_dict
 
-    return products_price_dict
+    return products_price_dict, products_links_dict
 
 

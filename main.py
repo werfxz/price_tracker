@@ -7,9 +7,9 @@ from mail import send_mail, create_mail_body
 
 
 if __name__ == "__main__":
-
+    discount_amount = 2
     while True:
-        price_dict = extract_product_links(products)
+        price_dict, links_dict = extract_product_links(products)
         #iterate over product
         for product_name in price_dict:
             prices = list(price_dict[product_name].values())
@@ -19,11 +19,14 @@ if __name__ == "__main__":
             #iterate over sellers
             for seller in price_dict[product_name]:
                 #compare prices of sellers with average price
-                #if price of seller is lower than %20 of the product send e-mail 
-                if price_dict[product_name][seller] < (average_price - (average_price*20/100)):
+                #if price of seller is lower than %discount_amount of the product send e-mail 
+                if price_dict[product_name][seller] < (average_price - (average_price*discount_amount/100)):
                     print(seller, "has a discount")
-                    #TODO seller yerine URL getirmemiz lazım direk mailden ürün linkine tıklayabilirim
-                    send_mail(create_mail_body(product_name, seller))
+                    discount_link = links_dict[product_name][seller]
+                    #ürünün diğer tüm linklerini birleştirdik mailde göndereceğiz kontrol etmek için
+                    product_links = "\n".join(list(links_dict[product_name].values()))
+                    
+                    send_mail(create_mail_body(product_name, discount_link, product_links))
             print("**************************************")
 
         #wait 10 - 100 seconds randomly 
