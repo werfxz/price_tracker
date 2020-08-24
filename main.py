@@ -7,7 +7,7 @@ from mail import send_mail, create_mail_body
 
 
 if __name__ == "__main__":
-    discount_amount = 2
+    discount_amount = 20
     while True:
         price_dict, links_dict = extract_product_links(products)
         #iterate over product
@@ -24,7 +24,7 @@ if __name__ == "__main__":
                     print(seller, "has a discount")
                     discount_link = links_dict[product_name][seller]
                     #ürünün diğer tüm linklerini birleştirdik mailde göndereceğiz kontrol etmek için
-                    product_links = "\n".join(list(links_dict[product_name].values()))
+                    product_links = "\n\n".join(list(links_dict[product_name].values()))
                     
                     send_mail(create_mail_body(product_name, discount_link, product_links))
             print("**************************************")
