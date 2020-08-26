@@ -5,8 +5,7 @@ from scrape import  extract_product_links
 from products import products
 from mail import send_mail, create_mail_body
 
-
-if __name__ == "__main__":
+def main():
     discount_amount = 20
     while True:
         price_dict, links_dict = extract_product_links(products)
@@ -31,3 +30,7 @@ if __name__ == "__main__":
 
         #wait 10 - 100 seconds randomly 
         sleep(randint(10,100))
+
+
+if __name__ == "__main__":
+    main()
