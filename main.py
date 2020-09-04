@@ -3,12 +3,13 @@ from time import sleep
 
 from scrape import Scraper
 from products import products
-from mail import send_mail, create_mail_body
+from mail import Mail
 
 def main():
 
     sc = Scraper()
-    discount_amount = 20
+    mail = Mail()
+    discount_amount = 1
     while True:
         product_list = sc.scrape_product_links(products)
         #iterate over product
@@ -24,10 +25,9 @@ def main():
                 if product.prices()[seller] < discounted_price:
                     print(seller, "has a discount")
                     discount_link = product.links()[seller]
-                    #ürünün diğer tüm linklerini birleştirdik mailde göndereceğiz kontrol etmek için
-                    product_links = "\n\n".join(list(product.links().keys()))
                     
-                    send_mail(create_mail_body(product.name, discount_link, product_links))
+                    mail.send_mail(mail.create_mail_body(product.name, discount_link, product.links()))
+
             print("**************************************")
 
         #wait 10 - 100 seconds randomly 

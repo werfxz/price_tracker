@@ -21,6 +21,15 @@ class Product:
         self.incehesap_link = None
         self.itopya_link = None
     
+    def filter_nulls(self, some_list):
+        #Filter Nulls from list
+        filtered_list = [] 
+        for val in some_list: 
+            if val != None : 
+                filtered_list.append(val) 
+
+        return filtered_list
+
     def average_price(self):
         """
         This function returns average price of the product
@@ -31,15 +40,15 @@ class Product:
                       self.teknosa_price, self.incehesap_price,
                       self.itopya_price]
 
-        #remove None prices
-        prices = [] 
-        for val in price_list: 
-            if val != None : 
-                prices.append(val) 
+        #remove Null prices
+        prices = self.filter_nulls(price_list)
         
         return sum(prices)/len(prices)
 
     def clean_nulls(self, d):
+        """
+        This function removes dictionary elements which has None value
+        """
         return {k:v 
                 for k, v in d.items() 
                 if v is not None}
