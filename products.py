@@ -58,13 +58,13 @@ class Product:
         This function returns Seller:Price dictionary
         """
 
-        prices = {"Hepsiburada": self.hepsi_price,
-                  "Trendyol": self.trendyol_price,
-                  "Amazon": self.amazon_price,
-                  "Vatan Bilgisayar": self.vatan_price,
-                  "Teknosa": self.teknosa_price,
-                  "İnce Hesap": self.incehesap_price,
-                  "İtopya": self.itopya_price}
+        prices = {"hepsiburada": self.hepsi_price,
+                  "trendyol": self.trendyol_price,
+                  "amazon": self.amazon_price,
+                  "vatan": self.vatan_price,
+                  "teknosa": self.teknosa_price,
+                  "incehesap": self.incehesap_price,
+                  "itopya": self.itopya_price}
         
         return self.clean_nulls(prices)
 
@@ -73,13 +73,13 @@ class Product:
         This function returns Seller:Product url
         """
 
-        links = {"Hepsiburada": self.hepsi_link,
-                  "Trendyol": self.trendyol_link,
-                  "Amazon": self.amazon_link,
-                  "Vatan Bilgisayar": self.vatan_link,
-                  "Teknosa": self.teknosa_link,
-                  "İnce Hesap": self.incehesap_link,
-                  "İtopya": self.itopya_link}
+        links = {"hepsiburada": self.hepsi_link,
+                  "trendyol": self.trendyol_link,
+                  "amazon": self.amazon_link,
+                  "vatan Bilgisayar": self.vatan_link,
+                  "teknosa": self.teknosa_link,
+                  "incehesap": self.incehesap_link,
+                  "itopya": self.itopya_link}
         
         return self.clean_nulls(links)
 
