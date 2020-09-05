@@ -23,12 +23,15 @@ class Scraper():
             return reader.read().splitlines()
 
     def get_random_header(self, header_list):
-
+        """
+        This function generates header to avoid getting caught by bot detections
+        """
+        #for future bot detection problems refer https://stackoverflow.com/a/54361531
         header = {'user-agent': random.choice(header_list), 
                   'accept-language': 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
                   'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
                   'accept-encoding': 'gzip, deflate, br'}
-                  
+
         return header
 
     def get_proxies(self):
