@@ -24,7 +24,11 @@ class Scraper():
 
     def get_random_header(self, header_list):
 
-        header = {'User-Agent': random.choice(header_list), 'X-Requested-With': 'XMLHttpRequest'}
+        header = {'user-agent': random.choice(header_list), 
+                  'accept-language': 'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7',
+                  'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+                  'accept-encoding': 'gzip, deflate, br'}
+                  
         return header
 
     def get_proxies(self):
@@ -49,6 +53,10 @@ class Scraper():
         """
         response = requests.get(url, headers=self.get_random_header(self.header_list), 
                                     proxies={"http": self.get_random_proxy(self.proxies)}, timeout=timeout)
+
+        if response.status_code == 404:
+            raise Exception("404 Status code")
+        
         soup = BeautifulSoup(response.content, 'html5lib') 
 
         return soup

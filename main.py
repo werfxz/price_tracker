@@ -9,7 +9,7 @@ def main():
 
     sc = Scraper()
     mail = Mail()
-    discount_amount = 1
+    discount_amount = 20
     while True:
         product_list = sc.scrape_product_links(products)
         #iterate over product
@@ -31,7 +31,7 @@ def main():
             print("**************************************")
 
         #wait 10 - 100 seconds randomly 
-        sleep(randint(10,100))
+        sleep(randint(3500,3600))
 
 
 if __name__ == "__main__":
