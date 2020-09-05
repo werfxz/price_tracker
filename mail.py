@@ -9,7 +9,7 @@ class Mail:
     def __init__(self):
         self.mail_user = os.environ.get('EMAIL_USER')
         self.mail_password = os.environ.get('EMAIL_PASS')
-        self.receiver_address = 'furkan.cetin1@yandex.com'
+        self.receiver_address = ['furkan.cetin1@yandex.com', 'emrey07@gmail.com']
 
 
 
@@ -24,13 +24,13 @@ class Mail:
         msg = MIMEMultipart()
         msg['Subject'] = 'About your product list'
         msg['From'] = self.mail_user
-        msg['To'] = self.receiver_address    #if you want to send multiple address make a list of mails 
+        msg['To'] = ", ".join(self.receiver_address)  #if you want to send multiple address make a list of mails 
         msg.attach(MIMEText(message, "html"))
 
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
             smtp.login(self.mail_user, self.mail_password)
-
-            smtp.send_message(msg)
+            smtp.send_message(msg, to_addrs=self.receiver_address)
+            print("Mail has been sent")
 
     def create_seller_tags(self, product_links):
         """
