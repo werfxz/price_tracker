@@ -10,17 +10,17 @@ def main():
 
     sc = Scraper()
     mail = Mail()
-    db = Database()
     discount_amount = 20
     while True:
         product_list = sc.scrape_product_links(products)
         #iterate over product
         for product in product_list:
-            #print average price of product
             print("Average price of", product.name + ":", product.average_price())
+            #initialize db, if initialized before it will connect to db
             #insert price of the product to database
-            db.insert_price(product)
-            
+            with Database('products.db') as db:
+                db.insert_price(product)
+
             #iterate over sellers
             for seller in product.prices():
                 #compare prices of sellers with average price
@@ -34,7 +34,7 @@ def main():
             
             print("**************************************")
 
-        #wait 10 - 100 seconds randomly 
+        #wait 1 hour randomly 
         sleep(randint(3500,3600))
 
 
