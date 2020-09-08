@@ -57,7 +57,7 @@ class Database:
 
         #Price of the product table
         self.cur.execute('''CREATE TABLE products_prices(
-            date text, 
+            date_time text, 
             product_id integer, 
             seller_id integer, 
             price real)
@@ -116,8 +116,8 @@ class Database:
         This functions inserts prices of the product scraped from different sellers
         """
         now = datetime.now()
-        # dd.mm.YY H:M:S
-        date_time = now.strftime("%d.%m.%Y %H:%M:%S")
+        # YYYY-MM-DD HH:MM
+        date_time = now.strftime("%Y-%m-%d %H:%M")
 
         for seller in product.prices():
             seller_id = self.find_seller_id(seller)
