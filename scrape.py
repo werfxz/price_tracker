@@ -1,6 +1,9 @@
 import re
 import requests
 import random
+from random import randint
+from time import sleep
+
 from bs4 import BeautifulSoup
 from products import Product
 
@@ -275,6 +278,8 @@ class Scraper():
                     print(e)
 
             products_list.append(product)   
+            #wait between 10-30 seconds randomly
+            sleep(randint(10,30))
 
         return products_list
 
