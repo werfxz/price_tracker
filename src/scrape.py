@@ -77,7 +77,7 @@ class Scraper():
         extracted_price = re.sub("[^0-9]", "", price_string.split(',')[0])
         return int(extracted_price)
 
-    def scrape_hepsi(self, url, timeout=60):
+    def scrape_hepsi(self, url, timeout=100):
         """
         This function takes hepsiburada product url and returns price of product
         """
@@ -88,7 +88,7 @@ class Scraper():
 
         return round(float(price))
 
-    def scrape_trendyol(self, url, timeout=60):
+    def scrape_trendyol(self, url, timeout=100):
         """
         This function takes trendyol product url and returns price of product
         """
@@ -114,7 +114,7 @@ class Scraper():
 
         return self.extract_price(content[0].get_text())
 
-    def scrape_amazon(self, url, timeout=60):
+    def scrape_amazon(self, url, timeout=100):
         """
         This function takes amazon product url and returns price of product
         """
@@ -135,7 +135,7 @@ class Scraper():
         #first remove decimal point from price then remove non numeric chars
         return self.extract_price(content[0].get_text())
         
-    def scrape_vatan(self, url, timeout=60):
+    def scrape_vatan(self, url, timeout=100):
         """
         This function takes vatan product url and returns price of product
         """
@@ -148,7 +148,7 @@ class Scraper():
         #first remove decimal point from price then remove non numeric chars
         return self.extract_price(content[0].get_text())
 
-    def scrape_teknosa(self, url, timeout=60):
+    def scrape_teknosa(self, url, timeout=100):
         """
         This function takes teknosa product url and returns price of product
         """
@@ -174,7 +174,7 @@ class Scraper():
 
         return self.extract_price(content[0].get_text())
 
-    def scrape_incehesap(self ,url, timeout=60):
+    def scrape_incehesap(self ,url, timeout=100):
         """
         This function takes incehesap product url and returns price of product
         """
@@ -198,7 +198,7 @@ class Scraper():
 
         return self.extract_price(content[0].get_text())
 
-    def scrape_itopya(self, url, timeout=60):
+    def scrape_itopya(self, url, timeout=100):
         """
         This function takes itopya product url and returns price of product
         """
