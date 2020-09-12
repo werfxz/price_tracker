@@ -1,10 +1,11 @@
 from random import randint
 from time import sleep
 
-from scrape import Scraper
-from products import products
-from mail import Mail
-from database import Database
+from src.scrape import Scraper
+from src.mail import Mail
+from src.database import Database
+from src.products import products
+
 
 def main():
 
