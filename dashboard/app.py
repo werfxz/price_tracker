@@ -8,10 +8,10 @@ import dash_bootstrap_components as dbc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
 
-conn = sqlite3.connect("products.db")
+conn = sqlite3.connect("../products.db")
 cur = conn.cursor()
 
-cur.execute("""SELECT P.DATE, PR.PRODUCT_NAME, S.SELLER_NAME, P.PRICE
+cur.execute("""SELECT P.DATE_TIME, PR.PRODUCT_NAME, S.SELLER_NAME, P.PRICE
                FROM PRODUCTS_PRICES P
                JOIN PRODUCTS PR
                  ON P.PRODUCT_ID = PR.PRODUCT_ID
@@ -22,34 +22,88 @@ prices = cur.fetchall()
 df = pd.DataFrame(prices, columns=['DATE','PRODUCT_NAME', 'SELLER_NAME', 'PRICE'])
 conn.close()
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+app = dash.Dash(
+    __name__, 
+    meta_tags=[{"name": "viewport", "content": "width=device-width"}],
+    prevent_initial_callbacks=True
+)
+server = app.server
 
-app = dash.Dash(__name__,
-                 external_stylesheets=[dbc.themes.BOOTSTRAP],
-                 prevent_initial_callbacks=True)
-
-app.layout = html.Div([
-    html.H1(children='Price Tracker Dashboard', style={
-        'textAlign': 'center'}
-    ),
-    html.Div(children='''
-        Choose a product
-    '''),
-    dcc.Dropdown(
-        id='product-dropdown',
-        options=[{'label': i, 'value': i} for i in df.PRODUCT_NAME.unique()],
-        placeholder="Choose a product",
-        style={"width": "50%"},
-        clearable=False
-    ),
-    dcc.Dropdown(
-        id='seller-dropdown',
-        options=[],
-        placeholder="Choose a seller",
-        style={"width": "50%"}
-    ),
-    dcc.Graph(id='product-price-graph')
-])
+#https://dash-gallery.plotly.host/Portal/
+app.layout = html.Div(
+    children=[
+        html.Div(
+            className="row",
+            children=[
+                # Column for user controls
+                html.Div(
+                    className="four columns div-user-controls",
+                    children=[
+                        html.Img(
+                            className="logo", src=app.get_asset_url("dash-logo-new.png")
+                        ),
+                        html.H2("DASH - PRICE TRACKER APP"),
+                        html.P(
+                            """Select different products using the product picker and select
+                            different seller for specific price"""
+                        ),
+                        # Change to side-by-side for mobile layout
+                        html.Div(
+                            className="row",
+                            children=[
+                                html.Div(
+                                    className="div-for-dropdown",
+                                    children=[
+                                        # Dropdown for locations on map
+                                        dcc.Dropdown(
+                                            id="product-dropdown", 
+                                            options=[                               
+                                                {"label": i, "value": i}
+                                                for i in df.PRODUCT_NAME.unique()
+                                            ],
+                                            placeholder="Select a product",
+                                        )
+                                    ],
+                                ),
+                                html.Div(
+                                    className="div-for-dropdown",
+                                    children=[
+                                        # Dropdown to select times
+                                        dcc.Dropdown(
+                                            id="seller-dropdown",
+                                            options=[],
+                                            placeholder="Select a seller",
+                                        )
+                                    ],
+                                ),
+                            ],
+                        ),
+                        #html.P(id="total-rides"),
+                        #html.P(id="total-rides-selection"),
+                        #html.P(id="date-value"),
+                        dcc.Markdown(
+                            children=[
+                                "Source: [Github](https://github.com/werfxz/price_tracker)"
+                            ]
+                        ),
+                    ],
+                ),
+                # Column for app graphs and plots
+                html.Div(
+                    className="eight columns div-for-charts bg-grey",
+                    children=[
+                        html.Div(
+                            className="price-graph",
+                            children=[
+                                dcc.Graph(id='product-price-graph')
+                            ]
+                        )
+                    ],
+                ),
+            ],
+        )
+    ]
+)
 
 
 @app.callback(
@@ -78,7 +132,11 @@ def set_seller(seller_options, selected_seller, selected_product):
     filtered_df = df[(df.SELLER_NAME.isin(selected_seller)) &
                     (df.PRODUCT_NAME == selected_product)].copy()
 
-    fig = px.line(filtered_df, x="DATE", y="PRICE", color="SELLER_NAME")
+    fig = px.line(filtered_df,
+                  x="DATE", y="PRICE",
+                  color="SELLER_NAME", line_shape='spline',
+                  template='plotly_dark',
+                  height=600)
 
     fig.update_layout(transition_duration=500)
 
