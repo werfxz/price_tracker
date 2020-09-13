@@ -110,7 +110,6 @@ class Scraper():
                         "span", attrs={"class": "prc-dsc"})
         else:
             print("Can't find price of the Trendyol Product")
-            return 0
 
         return self.extract_price(content[0].get_text())
 
@@ -130,7 +129,6 @@ class Scraper():
             content = soup.find_all("span", attrs={"id": "priceblock_saleprice"})
         else:
             print("Can't find price of the Amazon Product")
-            return 0
 
         #first remove decimal point from price then remove non numeric chars
         return self.extract_price(content[0].get_text())
@@ -170,7 +168,6 @@ class Scraper():
                         "div", attrs={"class": "new-price"})
         else:
             print("Can't find price of the Teknosa Product")
-            return 0
 
         return self.extract_price(content[0].get_text())
 
@@ -194,7 +191,6 @@ class Scraper():
                         "div", attrs={"class": "arti-indirimli-fiyat cur"})
         else:
             print("Can't find price of the İnce hesap Product")
-            return 0
 
         return self.extract_price(content[0].get_text())
 
@@ -213,7 +209,7 @@ class Scraper():
         return self.extract_price(
             content[0].get_text().replace(
                                     content[0].find("sup").get_text(), ""))
-        
+
 
 
     def extract_domainname(self, url):
